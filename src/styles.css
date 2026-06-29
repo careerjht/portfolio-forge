@@ -2,6 +2,70 @@
 @source "../src";
 @import "tw-animate-css";
 
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-cobalt: #2563EB;
+  --color-cobalt-deep: #1D4ED8;
+  --color-cobalt-soft: #EFF6FF;
+  --color-slate-bg: #F8FAFC;
+  --color-border-soft: #E2E8F0;
+  --color-tag-bg: #F1F5F9;
+  --color-tag-text: #475569;
+}
+
+@layer base {
+  html, body {
+    font-family: var(--font-sans);
+    background-color: var(--color-slate-bg);
+    color: #0F172A;
+  }
+}
+
+@utility section-title {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--color-cobalt);
+  font-size: 0.875rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1.5px solid var(--color-cobalt);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+@utility pf-card {
+  background: #fff;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 12px;
+}
+
+@utility pf-pill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-cobalt-soft);
+  color: var(--color-cobalt-deep);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+@utility pf-tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; }
+  .pf-card { break-inside: avoid; page-break-inside: avoid; }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
