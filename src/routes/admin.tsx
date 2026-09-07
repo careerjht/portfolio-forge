@@ -89,7 +89,7 @@ type Tab = "profile" | "exp" | "project" | "study";
 const TABS: { id: Tab; label: string; icon: typeof User }[] = [
   { id: "profile", label: "기본 프로필", icon: User },
   { id: "exp", label: "경험 / 학력", icon: Briefcase },
-  { id: "project", label: "프로젝트", icon: FolderKanban },
+  { id: "project", label: "강의 프로그램", icon: FolderKanban },
   { id: "study", label: "성과·후기", icon: BookOpen },
 ];
 
