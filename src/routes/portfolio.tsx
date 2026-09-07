@@ -253,6 +253,20 @@ function StudiesView({ items }: { items: ReturnType<typeof usePortfolio>["studie
                   </div>
                   {s.source && <div className="text-xs text-slate-500 mt-0.5">{s.source}</div>}
                   {s.summary && <p className="text-sm text-slate-600 mt-1">{s.summary}</p>}
+                  {s.review && s.review !== s.summary && (
+                    <details className="mt-2 group">
+                      <summary className="no-print cursor-pointer text-xs font-medium text-cobalt hover:underline list-none inline-flex items-center gap-1">
+                        <span className="group-open:hidden">상세 내용 보기 ▾</span>
+                        <span className="hidden group-open:inline">접기 ▴</span>
+                      </summary>
+                      <p className="text-sm text-slate-700 mt-2 whitespace-pre-wrap leading-relaxed">{s.review}</p>
+                    </details>
+                  )}
+                  {s.review && s.review !== s.summary && (
+                    <p className="hidden print:block text-sm text-slate-700 mt-2 whitespace-pre-wrap leading-relaxed">
+                      {s.review}
+                    </p>
+                  )}
                 </div>
               </li>
             );
