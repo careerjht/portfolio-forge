@@ -4,7 +4,22 @@ import { Mail, Award, Quote, Newspaper, Sparkles, X } from "lucide-react";
 import { usePortfolio, type ExperienceKind, type StudyKind, type Project } from "@/lib/portfolio-store";
 
 export const Route = createFileRoute("/portfolio")({
-  head: () => ({ meta: [{ title: "Portfolio" }] }),
+  head: () => ({
+    meta: [
+      { title: "정현태 커리어 컨설턴트 포트폴리오" },
+      {
+        name: "description",
+        content: "NCS 기반 직무 분석, 역량중심 서류작성, 심리검사 기반 커리어 컨설팅 — 정현태 커리어 컨설턴트의 강의 및 활동 포트폴리오.",
+      },
+      { property: "og:title", content: "정현태 커리어 컨설턴트 포트폴리오" },
+      {
+        property: "og:description",
+        content: "맞춤형 취업 전략과 NCS 기반 직무 분석, 실전 면접 코칭을 제공하는 커리어 컨설턴트 정현태의 포트폴리오.",
+      },
+      { property: "og:type", content: "profile" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: PortfolioPage,
 });
 
@@ -15,7 +30,7 @@ function PortfolioPage() {
   return (
     <div className="min-h-screen">
       <nav className="no-print bg-white border-b border-border-soft px-6 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div className="font-bold text-cobalt text-lg">Portfolio</div>
+        <div className="font-bold text-cobalt text-lg">정현태 · Career Consulting</div>
         <Link
           to="/admin"
           className="border border-border-soft text-slate-600 rounded-md px-2.5 py-1 text-xs hover:border-cobalt hover:text-cobalt"

@@ -405,7 +405,7 @@ function ProjectSection() {
 
   return (
     <>
-      <h2 className="section-title">프로젝트</h2>
+      <h2 className="section-title">강의 프로그램</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -417,7 +417,7 @@ function ProjectSection() {
         className="pf-card p-6 space-y-4"
       >
         <div>
-          <FieldLabel>프로젝트명</FieldLabel>
+          <FieldLabel>강의명</FieldLabel>
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
