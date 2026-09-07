@@ -90,7 +90,7 @@ const TABS: { id: Tab; label: string; icon: typeof User }[] = [
   { id: "profile", label: "기본 프로필", icon: User },
   { id: "exp", label: "경험 / 학력", icon: Briefcase },
   { id: "project", label: "프로젝트", icon: FolderKanban },
-  { id: "study", label: "학습 기록", icon: BookOpen },
+  { id: "study", label: "성과·후기", icon: BookOpen },
 ];
 
 function AdminShell() {
