@@ -1,10 +1,25 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Mail, BookOpen, FileText, Video, Sparkles, X } from "lucide-react";
+import { Mail, Award, Quote, Newspaper, Sparkles, X } from "lucide-react";
 import { usePortfolio, type ExperienceKind, type StudyKind, type Project } from "@/lib/portfolio-store";
 
 export const Route = createFileRoute("/portfolio")({
-  head: () => ({ meta: [{ title: "Portfolio" }] }),
+  head: () => ({
+    meta: [
+      { title: "정현태 커리어 컨설턴트 포트폴리오" },
+      {
+        name: "description",
+        content: "NCS 기반 직무 분석, 역량중심 서류작성, 심리검사 기반 커리어 컨설팅 — 정현태 커리어 컨설턴트의 강의 및 활동 포트폴리오.",
+      },
+      { property: "og:title", content: "정현태 커리어 컨설턴트 포트폴리오" },
+      {
+        property: "og:description",
+        content: "맞춤형 취업 전략과 NCS 기반 직무 분석, 실전 면접 코칭을 제공하는 커리어 컨설턴트 정현태의 포트폴리오.",
+      },
+      { property: "og:type", content: "profile" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: PortfolioPage,
 });
 
@@ -15,7 +30,7 @@ function PortfolioPage() {
   return (
     <div className="min-h-screen">
       <nav className="no-print bg-white border-b border-border-soft px-6 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div className="font-bold text-cobalt text-lg">Portfolio</div>
+        <div className="font-bold text-cobalt text-lg">정현태 · Career Consulting</div>
         <Link
           to="/admin"
           className="border border-border-soft text-slate-600 rounded-md px-2.5 py-1 text-xs hover:border-cobalt hover:text-cobalt"
@@ -103,7 +118,7 @@ function ExperienceView({ items }: { items: ReturnType<typeof usePortfolio>["exp
   const filtered = useMemo(() => (tab === "전체" ? items : items.filter((i) => i.kind === tab)), [items, tab]);
   return (
     <section>
-      <h2 className="section-title">Experience / Education</h2>
+      <h2 className="section-title">Career &amp; Activities</h2>
       <Tabs tabs={EXP_TABS as readonly string[]} value={tab} onChange={(v) => setTab(v as typeof tab)} />
       {filtered.length === 0 ? (
         <Empty />
@@ -133,7 +148,7 @@ function ProjectsView({ items }: { items: Project[] }) {
   const [open, setOpen] = useState<Project | null>(null);
   return (
     <section>
-      <h2 className="section-title">Projects</h2>
+      <h2 className="section-title">Lecture Programs</h2>
       {items.length === 0 ? (
         <Empty />
       ) : (
@@ -204,12 +219,12 @@ function ProjectsView({ items }: { items: Project[] }) {
   );
 }
 
-const STUDY_TABS: ("전체" | StudyKind)[] = ["전체", "책", "논문", "강의"];
+const STUDY_TABS: ("전체" | StudyKind)[] = ["전체", "성과", "후기", "미디어"];
 
 function studyIcon(k: StudyKind) {
-  if (k === "책") return BookOpen;
-  if (k === "논문") return FileText;
-  if (k === "강의") return Video;
+  if (k === "성과") return Award;
+  if (k === "후기") return Quote;
+  if (k === "미디어") return Newspaper;
   return Sparkles;
 }
 
@@ -218,7 +233,7 @@ function StudiesView({ items }: { items: ReturnType<typeof usePortfolio>["studie
   const filtered = useMemo(() => (tab === "전체" ? items : items.filter((i) => i.kind === tab)), [items, tab]);
   return (
     <section>
-      <h2 className="section-title">Study Log</h2>
+      <h2 className="section-title">Impact &amp; Reviews</h2>
       <Tabs tabs={STUDY_TABS as readonly string[]} value={tab} onChange={(v) => setTab(v as typeof tab)} />
       {filtered.length === 0 ? (
         <Empty />
