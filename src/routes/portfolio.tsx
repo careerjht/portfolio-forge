@@ -286,7 +286,7 @@ function Tabs({
                 : "bg-white border border-border-soft text-slate-600 hover:border-cobalt hover:text-cobalt"
             }`}
           >
-            {t}
+            {t === "학력" ? "교육이수" : t}
           </button>
         );
       })}
