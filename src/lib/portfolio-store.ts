@@ -67,7 +67,6 @@ const empty: PortfolioData = {
       "실전 면접 코칭",
       "직업상담사 2급",
       "사회복지사 1급",
-      "데이터분석준전문가(ADSP)",
       "MBTI · STRONG · BIRKMAN",
     ],
   },
