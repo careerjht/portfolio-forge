@@ -316,7 +316,7 @@ function ExperienceSection() {
             <FieldLabel>구분</FieldLabel>
             <select className={inputCls} value={kind} onChange={(e) => setKind(e.target.value as ExperienceKind)}>
               <option>경력</option>
-              <option>학력</option>
+              <option>교육이수</option>
               <option>대외활동</option>
             </select>
           </div>

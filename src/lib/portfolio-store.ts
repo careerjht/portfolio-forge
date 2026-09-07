@@ -8,7 +8,7 @@ export type Profile = {
   photoDataUrl?: string;
 };
 
-export type ExperienceKind = "경력" | "학력" | "대외활동";
+export type ExperienceKind = "경력" | "교육이수" | "대외활동";
 export type Experience = {
   id: string;
   kind: ExperienceKind;
@@ -95,7 +95,7 @@ const empty: PortfolioData = {
       "KB굿잡 취업박람회, 동남권 일자리 박람회, 공공데이터 청년인턴, 전역예정장병 취업박람회",
     ),
     e("대외활동", "지역카페 진로탐색 프로그램", "프로그램 강사", "상시", "지역 주민 대상 진로탐색 및 NCS 기반 입사지원서 작성 교육 운영"),
-    e("학력", "심리검사 전문가 과정", "MBTI · Strong · Birkman", "이수", "전문 심리검사 해석 및 상담 활용 과정 이수"),
+    e("교육이수", "심리검사 전문가 과정", "MBTI · Strong · Birkman", "이수", "전문 심리검사 해석 및 상담 활용 과정 이수"),
   ],
   projects: [
     {
@@ -180,7 +180,11 @@ function read(): PortfolioData {
     const raw = localStorage.getItem(KEY);
     if (!raw) return empty;
     const parsed = JSON.parse(raw);
-    return { ...empty, ...parsed, profile: { ...empty.profile, ...parsed.profile } };
+    const merged: PortfolioData = { ...empty, ...parsed, profile: { ...empty.profile, ...parsed.profile } };
+    merged.experiences = merged.experiences.map((x) =>
+      (x.kind as string) === "학력" ? { ...x, kind: "교육이수" as ExperienceKind } : x,
+    );
+    return merged;
   } catch {
     return empty;
   }

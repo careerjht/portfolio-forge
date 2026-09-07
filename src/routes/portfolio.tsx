@@ -111,7 +111,7 @@ function Hero({
   );
 }
 
-const EXP_TABS: ("전체" | ExperienceKind)[] = ["전체", "경력", "학력", "대외활동"];
+const EXP_TABS: ("전체" | ExperienceKind)[] = ["전체", "경력", "교육이수", "대외활동"];
 
 function ExperienceView({ items }: { items: ReturnType<typeof usePortfolio>["experiences"] }) {
   const [tab, setTab] = useState<(typeof EXP_TABS)[number]>("전체");
@@ -286,7 +286,7 @@ function Tabs({
                 : "bg-white border border-border-soft text-slate-600 hover:border-cobalt hover:text-cobalt"
             }`}
           >
-            {t === "학력" ? "교육이수" : t}
+            {t}
           </button>
         );
       })}
