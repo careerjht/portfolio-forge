@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { User, Briefcase, FolderKanban, BookOpen, Pencil, Trash2, Plus } from "lucide-react";
+import { User, Briefcase, FolderKanban, BookOpen, Pencil, Trash2, Plus, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import {
   usePortfolio,
   updateProfile,
@@ -13,6 +13,9 @@ import {
   addStudy,
   updateStudy,
   deleteStudy,
+  reorderExperiences,
+  reorderProjects,
+  reorderStudies,
   fileToDataUrl,
   uid,
   type Experience,
@@ -250,6 +253,85 @@ function ProfileForm() {
         </button>
       </form>
     </>
+  );
+}
+
+function SortableList<T extends { id: string }>({
+  items,
+  onReorder,
+  className,
+  renderItem,
+}: {
+  items: T[];
+  onReorder: (next: T[]) => void;
+  className?: string;
+  renderItem: (item: T, handle: React.ReactNode) => React.ReactNode;
+}) {
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [overIdx, setOverIdx] = useState<number | null>(null);
+
+  const move = (from: number, to: number) => {
+    if (from === to || from < 0 || to < 0 || to >= items.length) return;
+    const next = [...items];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    onReorder(next);
+  };
+
+  return (
+    <div className={className}>
+      {items.map((item, i) => (
+        <div
+          key={item.id}
+          draggable
+          onDragStart={(e) => {
+            setDragIdx(i);
+            e.dataTransfer.effectAllowed = "move";
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            setOverIdx(i);
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (dragIdx !== null) move(dragIdx, i);
+            setDragIdx(null);
+            setOverIdx(null);
+          }}
+          onDragEnd={() => {
+            setDragIdx(null);
+            setOverIdx(null);
+          }}
+          className={`${dragIdx === i ? "opacity-50" : ""} ${overIdx === i && dragIdx !== null && dragIdx !== i ? "ring-2 ring-cobalt/50 rounded-xl" : ""}`}
+        >
+          {renderItem(
+            item,
+            <span className="flex flex-col items-center text-slate-400">
+              <GripVertical size={16} className="cursor-grab active:cursor-grabbing" aria-label="드래그해서 순서 변경" />
+              <button
+                type="button"
+                onClick={() => move(i, i - 1)}
+                disabled={i === 0}
+                className="p-0.5 hover:text-cobalt disabled:opacity-30"
+                aria-label="위로 이동"
+              >
+                <ChevronUp size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={() => move(i, i + 1)}
+                disabled={i === items.length - 1}
+                className="p-0.5 hover:text-cobalt disabled:opacity-30"
+                aria-label="아래로 이동"
+              >
+                <ChevronDown size={14} />
+              </button>
+            </span>,
+          )}
+        </div>
+      ))}
+    </div>
   );
 }
 
