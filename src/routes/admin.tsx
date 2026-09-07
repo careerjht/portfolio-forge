@@ -88,7 +88,7 @@ function Gate({ onPass }: { onPass: () => void }) {
 type Tab = "profile" | "exp" | "project" | "study";
 const TABS: { id: Tab; label: string; icon: typeof User }[] = [
   { id: "profile", label: "기본 프로필", icon: User },
-  { id: "exp", label: "경험 / 학력", icon: Briefcase },
+  { id: "exp", label: "경험 / 교육이수", icon: Briefcase },
   { id: "project", label: "강의 프로그램", icon: FolderKanban },
   { id: "study", label: "성과·후기", icon: BookOpen },
 ];
@@ -300,7 +300,7 @@ function ExperienceSection() {
 
   return (
     <>
-      <h2 className="section-title">경험 / 학력</h2>
+      <h2 className="section-title">경험 / 교육이수</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -316,7 +316,7 @@ function ExperienceSection() {
             <FieldLabel>구분</FieldLabel>
             <select className={inputCls} value={kind} onChange={(e) => setKind(e.target.value as ExperienceKind)}>
               <option>경력</option>
-              <option>학력</option>
+              <option>교육이수</option>
               <option>대외활동</option>
             </select>
           </div>
