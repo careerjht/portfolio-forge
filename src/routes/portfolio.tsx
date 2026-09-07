@@ -260,9 +260,6 @@ function StudiesView({ items }: { items: ReturnType<typeof usePortfolio>["studie
                         <span className="hidden group-open:inline">접기 ▴</span>
                       </summary>
                       <p className="text-sm text-slate-700 mt-2 whitespace-pre-wrap leading-relaxed">{s.review}</p>
-                      <span className="hidden print:block" aria-hidden>
-                        {s.review}
-                      </span>
                     </details>
                   )}
                   {s.review && s.review !== s.summary && (
