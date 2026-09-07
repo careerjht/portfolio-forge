@@ -493,7 +493,7 @@ function ProjectSection() {
 function StudySection() {
   const { studies } = usePortfolio();
   const [editing, setEditing] = useState<StudyLog | null>(null);
-  const [kind, setKind] = useState<StudyKind>("책");
+  const [kind, setKind] = useState<StudyKind>("후기");
   const [title, setTitle] = useState("");
   const [source, setSource] = useState("");
   const [summary, setSummary] = useState("");
@@ -502,7 +502,7 @@ function StudySection() {
 
   const reset = () => {
     setEditing(null);
-    setKind("책");
+    setKind("후기");
     setTitle("");
     setSource("");
     setSummary("");
@@ -522,7 +522,7 @@ function StudySection() {
 
   return (
     <>
-      <h2 className="section-title">학습 기록</h2>
+      <h2 className="section-title">성과 · 후기 · 미디어</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -537,9 +537,9 @@ function StudySection() {
           <div>
             <FieldLabel>구분</FieldLabel>
             <select className={inputCls} value={kind} onChange={(e) => setKind(e.target.value as StudyKind)}>
-              <option>책</option>
-              <option>논문</option>
-              <option>강의</option>
+              <option>후기</option>
+              <option>성과</option>
+              <option>미디어</option>
               <option>기타</option>
             </select>
           </div>
@@ -552,7 +552,7 @@ function StudySection() {
             <input className={inputCls} value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div>
-            <FieldLabel>저자 또는 출처</FieldLabel>
+            <FieldLabel>출처 또는 참여자</FieldLabel>
             <input className={inputCls} value={source} onChange={(e) => setSource(e.target.value)} />
           </div>
         </div>
@@ -561,7 +561,7 @@ function StudySection() {
           <input className={inputCls} value={summary} onChange={(e) => setSummary(e.target.value)} />
         </div>
         <div>
-          <FieldLabel>상세 서평</FieldLabel>
+          <FieldLabel>상세 내용</FieldLabel>
           <textarea className={inputCls + " min-h-28"} value={review} onChange={(e) => setReview(e.target.value)} />
         </div>
         <div className="flex gap-2">

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Mail, BookOpen, FileText, Video, Sparkles, X } from "lucide-react";
+import { Mail, Award, Quote, Newspaper, Sparkles, X } from "lucide-react";
 import { usePortfolio, type ExperienceKind, type StudyKind, type Project } from "@/lib/portfolio-store";
 
 export const Route = createFileRoute("/portfolio")({
@@ -103,7 +103,7 @@ function ExperienceView({ items }: { items: ReturnType<typeof usePortfolio>["exp
   const filtered = useMemo(() => (tab === "전체" ? items : items.filter((i) => i.kind === tab)), [items, tab]);
   return (
     <section>
-      <h2 className="section-title">Experience / Education</h2>
+      <h2 className="section-title">Career &amp; Activities</h2>
       <Tabs tabs={EXP_TABS as readonly string[]} value={tab} onChange={(v) => setTab(v as typeof tab)} />
       {filtered.length === 0 ? (
         <Empty />
@@ -133,7 +133,7 @@ function ProjectsView({ items }: { items: Project[] }) {
   const [open, setOpen] = useState<Project | null>(null);
   return (
     <section>
-      <h2 className="section-title">Projects</h2>
+      <h2 className="section-title">Lecture Programs</h2>
       {items.length === 0 ? (
         <Empty />
       ) : (
@@ -204,12 +204,12 @@ function ProjectsView({ items }: { items: Project[] }) {
   );
 }
 
-const STUDY_TABS: ("전체" | StudyKind)[] = ["전체", "책", "논문", "강의"];
+const STUDY_TABS: ("전체" | StudyKind)[] = ["전체", "성과", "후기", "미디어"];
 
 function studyIcon(k: StudyKind) {
-  if (k === "책") return BookOpen;
-  if (k === "논문") return FileText;
-  if (k === "강의") return Video;
+  if (k === "성과") return Award;
+  if (k === "후기") return Quote;
+  if (k === "미디어") return Newspaper;
   return Sparkles;
 }
 
@@ -218,7 +218,7 @@ function StudiesView({ items }: { items: ReturnType<typeof usePortfolio>["studie
   const filtered = useMemo(() => (tab === "전체" ? items : items.filter((i) => i.kind === tab)), [items, tab]);
   return (
     <section>
-      <h2 className="section-title">Study Log</h2>
+      <h2 className="section-title">Impact &amp; Reviews</h2>
       <Tabs tabs={STUDY_TABS as readonly string[]} value={tab} onChange={(v) => setTab(v as typeof tab)} />
       {filtered.length === 0 ? (
         <Empty />
