@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { User, Briefcase, FolderKanban, BookOpen, Pencil, Trash2, Plus } from "lucide-react";
+import { User, Briefcase, FolderKanban, BookOpen, Pencil, Trash2, Plus, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import {
   usePortfolio,
   updateProfile,
@@ -13,6 +13,9 @@ import {
   addStudy,
   updateStudy,
   deleteStudy,
+  reorderExperiences,
+  reorderProjects,
+  reorderStudies,
   fileToDataUrl,
   uid,
   type Experience,
@@ -253,6 +256,85 @@ function ProfileForm() {
   );
 }
 
+function SortableList<T extends { id: string }>({
+  items,
+  onReorder,
+  className,
+  renderItem,
+}: {
+  items: T[];
+  onReorder: (next: T[]) => void;
+  className?: string;
+  renderItem: (item: T, handle: React.ReactNode) => React.ReactNode;
+}) {
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [overIdx, setOverIdx] = useState<number | null>(null);
+
+  const move = (from: number, to: number) => {
+    if (from === to || from < 0 || to < 0 || to >= items.length) return;
+    const next = [...items];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    onReorder(next);
+  };
+
+  return (
+    <div className={className}>
+      {items.map((item, i) => (
+        <div
+          key={item.id}
+          draggable
+          onDragStart={(e) => {
+            setDragIdx(i);
+            e.dataTransfer.effectAllowed = "move";
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            setOverIdx(i);
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (dragIdx !== null) move(dragIdx, i);
+            setDragIdx(null);
+            setOverIdx(null);
+          }}
+          onDragEnd={() => {
+            setDragIdx(null);
+            setOverIdx(null);
+          }}
+          className={`${dragIdx === i ? "opacity-50" : ""} ${overIdx === i && dragIdx !== null && dragIdx !== i ? "ring-2 ring-cobalt/50 rounded-xl" : ""}`}
+        >
+          {renderItem(
+            item,
+            <span className="flex flex-col items-center text-slate-400">
+              <GripVertical size={16} className="cursor-grab active:cursor-grabbing" aria-label="드래그해서 순서 변경" />
+              <button
+                type="button"
+                onClick={() => move(i, i - 1)}
+                disabled={i === 0}
+                className="p-0.5 hover:text-cobalt disabled:opacity-30"
+                aria-label="위로 이동"
+              >
+                <ChevronUp size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={() => move(i, i + 1)}
+                disabled={i === items.length - 1}
+                className="p-0.5 hover:text-cobalt disabled:opacity-30"
+                aria-label="아래로 이동"
+              >
+                <ChevronDown size={14} />
+              </button>
+            </span>,
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ItemActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
   return (
     <div className="flex gap-1">
@@ -353,10 +435,14 @@ function ExperienceSection() {
           )}
         </div>
       </form>
-      <div className="mt-6 space-y-3">
-        {experiences.length === 0 && <EmptyAdmin />}
-        {experiences.map((e) => (
-          <div key={e.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {experiences.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={experiences}
+        onReorder={reorderExperiences}
+        className="mt-6 space-y-3"
+        renderItem={(e, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3">
+            {handle}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="pf-tag">{e.kind}</span>
@@ -368,8 +454,8 @@ function ExperienceSection() {
             </div>
             <ItemActions onEdit={() => load(e)} onDelete={() => deleteExperience(e.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }
@@ -468,10 +554,14 @@ function ProjectSection() {
           )}
         </div>
       </form>
-      <div className="mt-6 grid md:grid-cols-2 gap-3">
-        {projects.length === 0 && <div className="md:col-span-2"><EmptyAdmin /></div>}
-        {projects.map((p) => (
-          <div key={p.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {projects.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={projects}
+        onReorder={reorderProjects}
+        className="mt-6 grid md:grid-cols-2 gap-3"
+        renderItem={(p, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3 h-full">
+            {handle}
             <div className="flex-1 min-w-0">
               {p.coverDataUrl && <img src={p.coverDataUrl} className="w-full h-32 object-cover rounded mb-2" alt="" />}
               <div className="font-semibold">{p.name}</div>
@@ -484,8 +574,8 @@ function ProjectSection() {
             </div>
             <ItemActions onEdit={() => load(p)} onDelete={() => deleteProject(p.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }
@@ -576,10 +666,14 @@ function StudySection() {
           )}
         </div>
       </form>
-      <div className="mt-6 space-y-3">
-        {studies.length === 0 && <EmptyAdmin />}
-        {studies.map((s) => (
-          <div key={s.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {studies.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={studies}
+        onReorder={reorderStudies}
+        className="mt-6 space-y-3"
+        renderItem={(s, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3">
+            {handle}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="pf-tag">{s.kind}</span>
@@ -591,8 +685,8 @@ function StudySection() {
             </div>
             <ItemActions onEdit={() => load(s)} onDelete={() => deleteStudy(s.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }

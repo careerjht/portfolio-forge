@@ -251,6 +251,9 @@ export function deleteExperience(id: string) {
   const s = getSnapshot();
   write({ ...s, experiences: s.experiences.filter((x) => x.id !== id) });
 }
+export function reorderExperiences(next: Experience[]) {
+  write({ ...getSnapshot(), experiences: next });
+}
 
 export function addProject(p: Project) {
   const s = getSnapshot();
@@ -264,6 +267,9 @@ export function deleteProject(id: string) {
   const s = getSnapshot();
   write({ ...s, projects: s.projects.filter((x) => x.id !== id) });
 }
+export function reorderProjects(next: Project[]) {
+  write({ ...getSnapshot(), projects: next });
+}
 
 export function addStudy(x: StudyLog) {
   const s = getSnapshot();
@@ -276,6 +282,9 @@ export function updateStudy(x: StudyLog) {
 export function deleteStudy(id: string) {
   const s = getSnapshot();
   write({ ...s, studies: s.studies.filter((y) => y.id !== id) });
+}
+export function reorderStudies(next: StudyLog[]) {
+  write({ ...getSnapshot(), studies: next });
 }
 
 export async function fileToDataUrl(file: File): Promise<string> {
