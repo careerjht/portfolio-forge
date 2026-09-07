@@ -435,10 +435,14 @@ function ExperienceSection() {
           )}
         </div>
       </form>
-      <div className="mt-6 space-y-3">
-        {experiences.length === 0 && <EmptyAdmin />}
-        {experiences.map((e) => (
-          <div key={e.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {experiences.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={experiences}
+        onReorder={reorderExperiences}
+        className="mt-6 space-y-3"
+        renderItem={(e, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3">
+            {handle}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="pf-tag">{e.kind}</span>
@@ -450,8 +454,8 @@ function ExperienceSection() {
             </div>
             <ItemActions onEdit={() => load(e)} onDelete={() => deleteExperience(e.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }
@@ -550,10 +554,14 @@ function ProjectSection() {
           )}
         </div>
       </form>
-      <div className="mt-6 grid md:grid-cols-2 gap-3">
-        {projects.length === 0 && <div className="md:col-span-2"><EmptyAdmin /></div>}
-        {projects.map((p) => (
-          <div key={p.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {projects.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={projects}
+        onReorder={reorderProjects}
+        className="mt-6 grid md:grid-cols-2 gap-3"
+        renderItem={(p, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3 h-full">
+            {handle}
             <div className="flex-1 min-w-0">
               {p.coverDataUrl && <img src={p.coverDataUrl} className="w-full h-32 object-cover rounded mb-2" alt="" />}
               <div className="font-semibold">{p.name}</div>
@@ -566,8 +574,8 @@ function ProjectSection() {
             </div>
             <ItemActions onEdit={() => load(p)} onDelete={() => deleteProject(p.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }
@@ -658,10 +666,14 @@ function StudySection() {
           )}
         </div>
       </form>
-      <div className="mt-6 space-y-3">
-        {studies.length === 0 && <EmptyAdmin />}
-        {studies.map((s) => (
-          <div key={s.id} className="pf-card p-4 flex justify-between items-start gap-3">
+      {studies.length === 0 && <div className="mt-6"><EmptyAdmin /></div>}
+      <SortableList
+        items={studies}
+        onReorder={reorderStudies}
+        className="mt-6 space-y-3"
+        renderItem={(s, handle) => (
+          <div className="pf-card p-4 flex justify-between items-start gap-3">
+            {handle}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="pf-tag">{s.kind}</span>
@@ -673,8 +685,8 @@ function StudySection() {
             </div>
             <ItemActions onEdit={() => load(s)} onDelete={() => deleteStudy(s.id)} />
           </div>
-        ))}
-      </div>
+        )}
+      />
     </>
   );
 }
